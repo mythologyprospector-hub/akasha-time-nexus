@@ -41,3 +41,6 @@ CREATE TABLE IF NOT EXISTS event_context (
 
     extra_json TEXT NOT NULL DEFAULT '{}'
 );
+
+CREATE INDEX IF NOT EXISTS idx_events_timestamp ON events(timestamp_utc);
+CREATE INDEX IF NOT EXISTS idx_events_type ON events(event_type);

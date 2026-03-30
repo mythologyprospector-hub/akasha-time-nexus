@@ -1,15 +1,17 @@
 # Architecture
 
-Akasha Time Nexus is a context engine, not an interpretation engine.
+V2 is the first repo pass where Akasha Time Nexus consumes real adapters from `akasha-apis`.
 
-It transforms:
+## Flow
 
-- timestamp
-- location
-- optional event metadata
+raw event
+→ timezone adapter
+→ solar adapter
+→ weather adapter
+→ context bundle
+→ Akasha Event export or SQLite storage
 
-into:
+## Current boundary
 
-- normalized clock context
-- normalized environmental context
-- query-friendly stored records
+V2 keeps lunar/tide/geomagnetic context conservative.
+The important milestone is the living loop, not maximal provider count.

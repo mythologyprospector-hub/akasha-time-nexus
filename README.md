@@ -1,56 +1,91 @@
 # akasha-time-nexus
 
-Akasha-native context engine that expands a plain event timestamp into a multi-axis record of world time, environmental state, and cyclical context.
+Akasha-native context engine that transforms a plain timestamp and location into a multi-axis world-state record.
 
-## What it is
+## V2 goal
 
-`akasha-time-nexus` is the temporal/context core for Akasha.
+V2 is the first version that **wires into real adapters from `akasha-apis`** and emits records that can be stored in the **Akasha Events** format.
+
+This repo now sits in the middle of the first living Akasha loop:
+
+```text
+akasha-apis
+    ↓
+akasha-time-nexus
+    ↓
+akasha-events
+```
+
+## What it does
 
 Given:
 
-- a UTC timestamp
-- a latitude
-- a longitude
-- optional event metadata
+- UTC timestamp
+- latitude
+- longitude
+- event metadata
 
-it returns a normalized context bundle such as:
+it:
 
-- local civil time
-- sunrise / sunset
-- day / night status
-- moon phase / illumination
-- season / day-of-year
-- weather snapshot
-- optional tide / geomagnetic context
-- derived offsets and query-friendly fields
+1. resolves timezone context
+2. fetches sunrise/sunset context
+3. fetches weather context
+4. derives clock/season fields
+5. builds a normalized context bundle
+6. can export an Akasha Event payload
+7. can store enriched events in SQLite
 
-This is **not** an interpretation engine. It does not decide what an event means.
-It produces **structured world-state context** so that higher Akasha layers can analyze patterns honestly.
+## Early dependencies
 
-## Why it exists
+Expected sibling / package dependency:
 
-Most observations are logged with only:
+- `akasha-apis`
 
-- date
-- time
-- note
+V2 uses these adapters from `akasha-apis`:
 
-That is too thin for pattern analysis.
+- `akasha_apis.geo.timezone_lookup.TimezoneLookupAdapter`
+- `akasha_apis.astronomy.sunrise_sunset.SunriseSunsetAdapter`
+- `akasha_apis.weather.open_meteo.OpenMeteoWeatherAdapter`
 
-Akasha Time Nexus treats time as a **bundle of concurrent clocks and conditions**.
+## Why this matters
 
-## MVP scope
+Akasha Time Nexus is not a clock utility.
 
-V1 includes:
+It is the first system that answers:
 
-- event ingestion model
-- normalized context model
-- local/UTC clock expansion
-- season/day-of-year derivation
-- sunrise/sunset enrichment stub
-- lunar enrichment stub
-- weather enrichment stub
-- SQLite storage layer
-- CLI example path
+> What was the state of time and world when this event happened?
 
-V1 intentionally ships with conservative stub enrichers so the architecture is locked down before API sprawl begins.
+That means every later Akasha system can work with enriched context instead of raw timestamps.
+
+## CLI example
+
+```bash
+python -m akasha_time_nexus.cli stamp \
+  --timestamp 2026-03-30T20:00:00Z \
+  --lat 38.42 \
+  --lon -82.44 \
+  --event-type observation \
+  --title "Test anomaly" \
+  --timezone America/New_York
+```
+
+To emit an Akasha Event:
+
+```bash
+python -m akasha_time_nexus.cli event \
+  --timestamp 2026-03-30T20:00:00Z \
+  --lat 38.42 \
+  --lon -82.44 \
+  --event-type observation \
+  --title "Test anomaly"
+```
+
+To store in SQLite:
+
+```bash
+python -m akasha_time_nexus.cli stamp \
+  --timestamp 2026-03-30T20:00:00Z \
+  --lat 38.42 \
+  --lon -82.44 \
+  --db nexus.db
+```

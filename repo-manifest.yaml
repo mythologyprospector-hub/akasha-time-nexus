@@ -1,8 +1,8 @@
 repo:
   name: akasha-time-nexus
   ecosystem: akasha
-  version: 0.1.0
-  status: experimental
+  version: 0.2.0
+  status: active
 
 identity:
   role: core
@@ -22,11 +22,11 @@ interfaces:
     - latitude
     - longitude
     - optional_event_metadata
-    - optional_external_api_sources
+    - akasha_apis_adapters
   produces:
     - enriched_event_records
     - normalized_context_bundles
-    - queryable_temporal_context
+    - akasha_event_payloads
     - sqlite_event_storage
 
 capabilities:
@@ -40,3 +40,7 @@ alignment:
   axioms_required: true
   canonical_structure: true
   interpretation_free_core: true
+
+depends_on:
+  - akasha-apis
+  - akasha-events
