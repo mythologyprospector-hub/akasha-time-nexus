@@ -51,3 +51,6 @@ def main() -> None:
     elif args.command == "event":
         event_payload = to_akasha_event(enriched)
         print(json.dumps(event_payload, indent=2))
+
+if __name__ == "__main__":
+    main()
