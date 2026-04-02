@@ -89,3 +89,39 @@ python -m akasha_time_nexus.cli stamp \
   --lon -82.44 \
   --db nexus.db
 ```
+
+## Engine Role
+
+TODO: fill this section.
+
+## Why it exists
+
+TODO: fill this section.
+
+## Inputs
+
+TODO: fill this section.
+
+## Memory / Registry
+
+TODO: fill this section.
+
+## Relation Model
+
+TODO: fill this section.
+
+## Evaluator
+
+TODO: fill this section.
+
+## Outputs
+
+TODO: fill this section.
+
+## Position in Constellation
+
+TODO: fill this section.
+
+## Next Steps
+
+TODO: fill this section.

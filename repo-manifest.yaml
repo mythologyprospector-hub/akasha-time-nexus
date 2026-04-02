@@ -44,3 +44,8 @@ alignment:
 depends_on:
   - akasha-apis
   - akasha-events
+
+engine:
+  family: observation
+  class: context_engine
+  role: unknown
