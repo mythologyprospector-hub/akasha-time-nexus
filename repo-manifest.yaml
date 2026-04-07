@@ -48,3 +48,11 @@ alignment:
 
 depends_on:
   - akasha-apis
+
+# ---- Canonical sections added by akasha-canon ----
+type: organ
+
+family: discovery
+
+role: time-nexus
+
